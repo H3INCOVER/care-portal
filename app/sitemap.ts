@@ -1,29 +1,33 @@
 import { MetadataRoute } from "next";
+import { getFacilities } from "@/lib/facilities";
 
-import facilities from "@/data/facilities.json";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const facilities = await getFacilities();
 
-export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://portal.h3incover.com";
 
-  const staticPages = [
-    "",
-    "/facilities",
-    "/about",
-    "/contact",
-    "/privacy",
-    "/terms",
-  ].map((path) => ({
-    url: `${baseUrl}${path}`,
-    lastModified: new Date(),
-  }));
-
-  const facilityPages = facilities.map((facility) => ({
-    url: `${baseUrl}/facilities/${facility.slug}`,
-    lastModified: new Date(),
-  }));
+  const facilityUrls = facilities
+    .filter((facility) => facility.isPublished)
+    .map((facility) => ({
+      url: `${baseUrl}/facilities/${facility.slug}`,
+      lastModified: new Date(
+        facility.updatedAt || facility.createdAt || Date.now()
+      ),
+    }));
 
   return [
-    ...staticPages,
-    ...facilityPages,
+    {
+      url: baseUrl,
+      lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/facilities`,
+      lastModified: new Date(),
+    },
+    {
+      url: `${baseUrl}/contact/edit`,
+      lastModified: new Date(),
+    },
+    ...facilityUrls,
   ];
 }
