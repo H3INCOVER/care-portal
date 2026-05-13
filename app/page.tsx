@@ -13,7 +13,7 @@ export default async function HomePage() {
   const publishedFacilities = facilities
     .filter(
       (facility) =>
-        facility.isPublished === true || facility.isPublished === "true",
+        facility.isPublished === true,
     )
     .sort((a, b) => {
       const dateA = new Date(

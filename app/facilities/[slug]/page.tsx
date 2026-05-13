@@ -51,7 +51,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
           (item) =>
             item.companyId === facility.companyId &&
             item.facilityId !== facility.facilityId &&
-            (item.isPublished === true || item.isPublished === "true"),
+            item.isPublished === true,
         )
       : [];
 
@@ -60,7 +60,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
       (item) =>
         item.facilityId !== facility.facilityId &&
         item.area === facility.area &&
-        (item.isPublished === true || item.isPublished === "true"),
+        item.isPublished === true,
     )
     .sort((a, b) => {
       if (a.type === facility.type && b.type !== facility.type) return -1;
