@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-gray-50">
@@ -28,7 +30,11 @@ export default function AboutPage() {
             <div className="grid gap-2 py-4 md:grid-cols-[160px_1fr]">
               <p className="font-semibold text-gray-500">お問い合わせ</p>
               <p className="leading-relaxed">
-                掲載情報の修正・追加掲載に関するお問い合わせは、専用フォームよりご連絡ください。
+                掲載情報の修正・追加掲載に関するお問い合わせは、
+                <Link href="/contact/edit" className="text-emerald-700 hover:underline font-semibold">
+                  専用フォーム
+                </Link>
+                よりご連絡ください。
               </p>
             </div>
           </div>
