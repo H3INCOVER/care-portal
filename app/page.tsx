@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { getFacilities } from "@/lib/facilities";
 
-function displayArea(area: string | undefined) {
+function displayArea(area: string | undefined, city: string | undefined) {
   if (!area) return "エリア未掲載";
+  if (!city) return area;
 
-  return area.replace("福岡市", "");
+  return area.replace(city, "");
 }
 
 export default async function HomePage() {
@@ -34,9 +35,9 @@ export default async function HomePage() {
     ),
   );
 
-  const areas = Array.from(
+  const cities = Array.from(
     new Set(
-      publishedFacilities.map((facility) => facility.area).filter(Boolean),
+      publishedFacilities.map((facility) => facility.city).filter(Boolean),
     ),
   );
 
@@ -131,13 +132,13 @@ export default async function HomePage() {
         </div>
 
         <div className="mt-8 flex flex-wrap gap-3">
-          {areas.map((area) => (
+          {cities.map((city) => (
             <Link
-              key={area}
-              href={`/facilities?area=${encodeURIComponent(area)}`}
+              key={city}
+              href={`/facilities?city=${encodeURIComponent(city)}`}
               className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition"
             >
-              {displayArea(area)}
+              {city}
             </Link>
           ))}
         </div>
@@ -179,7 +180,7 @@ export default async function HomePage() {
                   <p className="text-sm text-gray-500">{facility.type}</p>
 
                   <p className="mt-1 text-sm text-gray-500">
-                    {displayArea(facility.area)}
+                    {displayArea(facility.area, facility.city)}
                   </p>
                 </div>
               </div>

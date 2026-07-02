@@ -1,0 +1,32 @@
+# 変更履歴 (Changelog)
+
+本プロジェクトの機能追加、データ更新、および構成変更の履歴を記録します。
+
+---
+
+## [2026-07-02]
+
+### 追加 (Added)
+* **開発標準（Development Standard v2.0）に準拠した設計・運用ドキュメント群の作成**:
+  * [.agents/AGENTS.md](file:///c:/Projects/care-portal_v2/.agents/AGENTS.md) にワークスペース共通のAI開発基本ルールと完成定義を登録しました。
+  * [docs/vision.md](file:///c:/Projects/care-portal_v2/docs/vision.md)（プロジェクト理念・提供価値・AI役割分担）を新規作成しました。
+  * [docs/operations.md](file:///c:/Projects/care-portal_v2/docs/operations.md)（データ更新フロー、定期点検、バックアップ手順、編集時の禁止事項）を新規作成しました。
+  * [docs/features/facilities-search.md](file:///c:/Projects/care-portal_v2/docs/features/facilities-search.md)（事業所検索・絞り込みの目的・仕様・データフロー）を新規作成しました。
+* **春日市の介護事業所データの追加**:
+  * BODIKのオープンデータ（`402184_care_service_20240401.csv`）を基に、春日市の事業所データ **92件** を抽出し、[facilities.csv](file:///c:/Projects/care-portal_v2/data/facilities.csv) に追加しました。
+  * 対象サービス種別は、本ポータルでサポートされている `訪問介護`、`居宅介護支援`、`通所介護`（地域密着型含む）、`訪問看護`、`福祉用具貸与` に限定して取り込みました。
+* **新規追加手順書の作成**:
+  * 今後新たな市区町村の介護事業所データを手動・スクリプトで追加するための手順書 [ADD_CITY.md](file:///c:/Projects/care-portal_v2/ADD_CITY.md) を作成しました。
+
+### 変更 (Changed)
+* **データ更新ポリシーのアップデート**:
+  * [docs/data-update-policy.md](file:///c:/Projects/care-portal_v2/docs/data-update-policy.md) において、データの段階的な削除ライフサイクル（公開 ➡ 削除候補 ➡ 非公開 ➡ アーカイブ ➡ 完全削除）を定義しました。
+* **設計判断の基準追加**:
+  * [docs/decisions.md](file:///c:/Projects/care-portal_v2/docs/decisions.md) において、設計選択時の他案比較および「将来再設計・移行を行うための条件（トリガー）」を追加しました。
+* **「エリアから探す」の市区町村単位への移行**:
+  * トップページ（[app/page.tsx](file:///c:/Projects/care-portal_v2/app/page.tsx)）の「エリアから探す」について、地区（area）名ではなく市名（city：`福岡市`、`北九州市`、`春日市`）を表示するように変更しました。
+  * 各ボタンをクリックすると、一覧ページへ市絞り込みパラメータ付きリンク（例：`/facilities?city=春日市`）で遷移するようにしました。
+* **エリア表記（丁目）の正規化**:
+  * [facilities.csv](file:///c:/Projects/care-portal_v2/data/facilities.csv) の春日市データについて、`area` 列と `serviceArea` 列の値から「丁目」表記を除去する正規化を行いました（例：「小倉四丁目」➡「小倉」）。
+* **表示処理の動的化**:
+  * トップページおよび詳細ページ（[app/facilities/[slug]/page.tsx](file:///c:/Projects/care-portal_v2/app/facilities/[slug]/page.tsx)）での「エリア表記から親市名を除去する処理（`displayArea`）」を、ハードコーディングを廃して対象レコードの `city` フィールドに基づいて動的にトリムする構成に変更しました。

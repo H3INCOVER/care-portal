@@ -101,7 +101,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
                   href={`/facilities?area=${encodeURIComponent(facility.area)}`}
                   className="text-gray-500 hover:text-emerald-700 transition"
                 >
-                  {facility.area.replace("福岡市", "")}
+                  {facility.city ? facility.area.replace(facility.city, "") : facility.area}
                 </Link>
               </>
             )}
