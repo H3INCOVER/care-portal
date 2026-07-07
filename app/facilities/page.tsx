@@ -52,6 +52,26 @@ const typeStyles: Record<string, { icon: string; badge: string }> = {
     icon: "bg-rose-100 text-rose-700",
     badge: "bg-rose-50 text-rose-700",
   },
+  介護老人福祉施設: {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+  },
+  介護老人保健施設: {
+    icon: "bg-sky-100 text-sky-700",
+    badge: "bg-sky-50 text-sky-700",
+  },
+  小規模多機能型居宅介護: {
+    icon: "bg-orange-100 text-orange-700",
+    badge: "bg-orange-50 text-orange-700",
+  },
+  認知症対応型共同生活介護: {
+    icon: "bg-emerald-100 text-emerald-700",
+    badge: "bg-emerald-50 text-emerald-700",
+  },
+  特定施設入居者生活介護: {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+  },
 };
 
 const defaultStyle = {
