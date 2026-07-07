@@ -41,6 +41,49 @@ export default async function HomePage() {
     ),
   );
 
+  // 市区町村ごとの掲載件数を集計 (isPublished === true のデータのみ)
+  const cityCounts = publishedFacilities.reduce((acc, facility) => {
+    const city = facility.city;
+    if (city) {
+      acc[city] = (acc[city] || 0) + 1;
+    }
+    return acc;
+  }, {} as Record<string, number>);
+
+  // 市区町村の優先表示順を制御するソートロジック
+  const cityOrder = ["福岡市", "北九州市", "春日市", "大野城市"];
+  const sortedCities = cities.sort((a, b) => {
+    const indexA = cityOrder.indexOf(a);
+    const indexB = cityOrder.indexOf(b);
+    
+    if (indexA !== -1 && indexB !== -1) {
+      return indexA - indexB;
+    }
+    if (indexA !== -1) return -1;
+    if (indexB !== -1) return 1;
+    return a.localeCompare(b, "ja");
+  });
+
+  const homeServices = [
+    "居宅介護支援",
+    "訪問介護",
+    "通所介護",
+    "訪問看護",
+    "福祉用具貸与"
+  ];
+
+  const facilityServices = [
+    "介護老人福祉施設",
+    "介護老人保健施設",
+    "認知症対応型共同生活介護",
+    "特定施設入居者生活介護",
+    "小規模多機能型居宅介護",
+    "住宅型有料老人ホーム"
+  ];
+
+  const homeServicesList = homeServices.filter(type => serviceTypes.includes(type));
+  const facilityServicesList = facilityServices.filter(type => serviceTypes.includes(type));
+
   return (
     <main className="min-h-screen bg-gray-50">
       <section className="relative overflow-hidden border-b border-gray-200 bg-white">
@@ -79,13 +122,50 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          <p className="mt-8 text-sm text-gray-200">
-            現在の掲載件数：{publishedFacilities.length}件
-          </p>
+          <div className="mt-8 border-t border-white/10 pt-4">
+            <p className="text-sm font-semibold text-emerald-200">
+              福岡県内 {publishedFacilities.length.toLocaleString()}事業所掲載
+            </p>
+            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-300">
+              {sortedCities.map((city) => (
+                <span key={city} className="whitespace-nowrap">
+                  {city} {cityCounts[city]?.toLocaleString() || 0}件
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
+      {/* ① エリアから探す（最優先配置） */}
       <section className="max-w-6xl mx-auto px-4 py-14">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-emerald-700">
+              Search by Area
+            </p>
+
+            <h2 className="mt-2 text-2xl md:text-3xl font-bold text-gray-900">
+              エリアから探す
+            </h2>
+          </div>
+        </div>
+
+        <div className="mt-8 flex flex-wrap gap-3">
+          {sortedCities.map((city) => (
+            <Link
+              key={city}
+              href={`/facilities?city=${encodeURIComponent(city)}`}
+              className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition"
+            >
+              {city}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ② サービス種別から探す（第2優先、グループ分け適用） */}
+      <section className="max-w-6xl mx-auto px-4 py-14 border-t border-gray-200">
         <div className="flex items-end gap-6">
           <div>
             <p className="text-sm font-semibold text-emerald-700">
@@ -105,45 +185,55 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-3">
-          {serviceTypes.map((type) => (
-            <Link
-              key={type}
-              href={`/facilities?type=${encodeURIComponent(type)}`}
-              className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition"
-            >
-              {type}
-            </Link>
-          ))}
+        <div className="mt-8 space-y-8">
+          {homeServicesList.length > 0 && (
+            <div>
+              <h3 className="text-lg font-bold text-gray-800 border-l-4 border-emerald-600 pl-3">
+                在宅サービス
+              </h3>
+              <div className="mt-4 flex flex-wrap gap-3">
+                {homeServicesList.map((type) => (
+                  <Link
+                    key={type}
+                    href={`/facilities?type=${encodeURIComponent(type)}`}
+                    className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition"
+                  >
+                    {type}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {facilityServicesList.length > 0 && (
+            <div>
+              <h3 className="text-lg font-bold text-gray-800 border-l-4 border-emerald-600 pl-3">
+                入居施設・その他
+              </h3>
+              <div className="mt-4 flex flex-wrap gap-3">
+                {facilityServicesList.map((type) => {
+                  let displayLabel = type;
+                  if (type === "介護老人福祉施設") displayLabel = "介護老人福祉施設（特養）";
+                  if (type === "介護老人保健施設") displayLabel = "介護老人保健施設（老健）";
+                  if (type === "認知症対応型共同生活介護") displayLabel = "認知症対応型共同生活介護（グループホーム）";
+                  
+                  return (
+                    <Link
+                      key={type}
+                      href={`/facilities?type=${encodeURIComponent(type)}`}
+                      className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition"
+                    >
+                      {displayLabel}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-4 py-14 border-t border-gray-200">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold text-emerald-700">
-              Search by Area
-            </p>
-
-            <h2 className="mt-2 text-2xl md:text-3xl font-bold text-gray-900">
-              エリアから探す
-            </h2>
-          </div>
-        </div>
-
-        <div className="mt-8 flex flex-wrap gap-3">
-          {cities.map((city) => (
-            <Link
-              key={city}
-              href={`/facilities?city=${encodeURIComponent(city)}`}
-              className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition"
-            >
-              {city}
-            </Link>
-          ))}
-        </div>
-      </section>
-
+      {/* ③ 最近追加した事業所 */}
       <section className="max-w-6xl mx-auto px-4 py-14 border-t border-gray-200">
         <div className="flex items-end gap-6">
           <div>
@@ -152,7 +242,7 @@ export default async function HomePage() {
             </p>
 
             <h2 className="mt-2 text-2xl md:text-3xl font-bold text-gray-900">
-              新着事業所
+              最近追加した事業所
             </h2>
           </div>
 
