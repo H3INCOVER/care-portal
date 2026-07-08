@@ -72,7 +72,7 @@ export default function Footer() {
                 </a>
 
                 <a
-                  href="https://h3incover.com/care"
+                  href="https://h3incover.com/care/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-red/30 hover:-translate-y-0.5 transition-all duration-200"
