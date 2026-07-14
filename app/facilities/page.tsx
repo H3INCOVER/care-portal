@@ -72,6 +72,58 @@ const typeStyles: Record<string, { icon: string; badge: string }> = {
     icon: "bg-rose-100 text-rose-700",
     badge: "bg-rose-50 text-rose-700",
   },
+  介護予防支援: {
+    icon: "bg-amber-100 text-amber-700",
+    badge: "bg-amber-50 text-amber-700",
+  },
+  訪問入浴介護: {
+    icon: "bg-emerald-100 text-emerald-700",
+    badge: "bg-emerald-50 text-emerald-700",
+  },
+  通所リハビリテーション: {
+    icon: "bg-orange-100 text-orange-700",
+    badge: "bg-orange-50 text-orange-700",
+  },
+  短期入所生活介護: {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+  },
+  短期入所療養介護: {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+  },
+  地域密着型介護老人福祉施設: {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+  },
+  介護医療院: {
+    icon: "bg-sky-100 text-sky-700",
+    badge: "bg-sky-50 text-sky-700",
+  },
+  "定期巡回・随時対応型訪問介護看護": {
+    icon: "bg-emerald-100 text-emerald-700",
+    badge: "bg-emerald-50 text-emerald-700",
+  },
+  地域密着型通所介護: {
+    icon: "bg-orange-100 text-orange-700",
+    badge: "bg-orange-50 text-orange-700",
+  },
+  軽費老人ホーム: {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+  },
+  サービス付き高齢者向け住宅: {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+  },
+  "介護老人福祉施設（ユニット型）": {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+  },
+  "特定施設入居者生活介護（ユニット型）": {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+  },
 };
 
 const defaultStyle = {
