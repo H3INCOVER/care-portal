@@ -562,7 +562,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
 
                 <button
                   type="submit"
-                  className="rounded-2xl bg-emerald-600 px-5 py-3 text-sm md:text-base text-white font-semibold shadow-sm transition hover:bg-emerald-700 whitespace-nowrap"
+                  className="rounded-2xl bg-emerald-600 px-5 py-3 text-sm md:text-base text-white font-semibold shadow-sm transition-all duration-100 ease-out hover:bg-emerald-700 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2 whitespace-nowrap"
                 >
                   検索
                 </button>
@@ -595,7 +595,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                     selectedArea,
                     keyword,
                   )}
-                  className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                  className={`rounded-full border px-4 py-2 text-sm font-medium transition active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
                     selectedCategory === "すべて"
                       ? "border-emerald-600 bg-emerald-600 text-white"
                       : "border-gray-300 bg-white text-gray-700 hover:border-emerald-400 hover:text-emerald-700"
@@ -613,7 +613,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                       selectedArea,
                       keyword,
                     )}
-                    className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                    className={`rounded-full border px-4 py-2 text-sm font-medium transition active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
                       selectedCategory === cat
                         ? "border-emerald-600 bg-emerald-600 text-white"
                         : "border-gray-300 bg-white text-gray-700 hover:border-emerald-400 hover:text-emerald-700"
@@ -634,7 +634,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                       selectedArea,
                       keyword,
                     )}
-                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
                       selectedType === selectedCategory
                         ? "border-emerald-500 bg-emerald-50 text-emerald-700 font-semibold"
                         : "border-gray-200 bg-gray-50 text-gray-600 hover:border-emerald-400 hover:text-emerald-700"
@@ -652,7 +652,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                         selectedArea,
                         keyword,
                       )}
-                      className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                      className={`rounded-full border px-3 py-1.5 text-xs font-medium transition active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
                         selectedType === subType
                           ? "border-emerald-500 bg-emerald-50 text-emerald-700 font-semibold"
                           : "border-gray-200 bg-gray-50 text-gray-600 hover:border-emerald-400 hover:text-emerald-700"
@@ -677,7 +677,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                   "すべて",
                   keyword,
                 )}
-                className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                className={`rounded-full border px-4 py-2 text-sm font-medium transition active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
                   selectedCity === "すべて"
                     ? "border-emerald-600 bg-emerald-600 text-white"
                     : "border-gray-300 bg-white text-gray-700 hover:border-emerald-400 hover:text-emerald-700"
@@ -695,7 +695,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                     "すべて",
                     keyword,
                   )}
-                  className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                  className={`rounded-full border px-4 py-2 text-sm font-medium transition active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
                     selectedCity === city
                       ? "border-emerald-600 bg-emerald-600 text-white"
                       : "border-gray-300 bg-white text-gray-700 hover:border-emerald-400 hover:text-emerald-700"
@@ -721,7 +721,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                     "すべて",
                     keyword,
                   )}
-                  className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                  className={`rounded-full border px-4 py-2 text-sm font-medium transition active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
                     selectedArea === "すべて"
                       ? "border-emerald-600 bg-emerald-600 text-white"
                       : "border-gray-300 bg-white text-gray-700 hover:border-emerald-400 hover:text-emerald-700"
@@ -739,7 +739,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                       area,
                       keyword,
                     )}
-                    className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                    className={`rounded-full border px-4 py-2 text-sm font-medium transition active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
                       selectedArea === area
                         ? "border-emerald-600 bg-emerald-600 text-white"
                         : "border-gray-300 bg-white text-gray-700 hover:border-emerald-400 hover:text-emerald-700"
@@ -876,7 +876,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
               {currentPage > 1 ? (
                 <Link
                   href={createFacilitiesHref(selectedType, selectedCity, selectedArea, keyword, currentPage - 1)}
-                  className="rounded-xl border border-gray-300 bg-white px-3 py-2 text-gray-700 hover:border-emerald-500 hover:text-emerald-700 transition font-medium"
+                  className="rounded-xl border border-gray-300 bg-white px-3 py-2 text-gray-700 hover:border-emerald-500 hover:text-emerald-700 transition font-medium active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
                 >
                   前へ
                 </Link>
@@ -903,10 +903,10 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                   <Link
                     key={`page-${pageNum}`}
                     href={createFacilitiesHref(selectedType, selectedCity, selectedArea, keyword, pageNum)}
-                    className={`rounded-xl px-3.5 py-2 font-medium transition ${
+                    className={`rounded-xl px-3.5 py-2 font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
                       isCurrent
                         ? "bg-emerald-600 text-white shadow-sm"
-                        : "border border-gray-300 bg-white text-gray-700 hover:border-emerald-500 hover:text-emerald-700"
+                        : "border border-gray-300 bg-white text-gray-700 hover:border-emerald-500 hover:text-emerald-700 active:scale-[0.97]"
                     }`}
                   >
                     {pageNum}
@@ -918,7 +918,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
               {currentPage < totalPages ? (
                 <Link
                   href={createFacilitiesHref(selectedType, selectedCity, selectedArea, keyword, currentPage + 1)}
-                  className="rounded-xl border border-gray-300 bg-white px-3 py-2 text-gray-700 hover:border-emerald-500 hover:text-emerald-700 transition font-medium"
+                  className="rounded-xl border border-gray-300 bg-white px-3 py-2 text-gray-700 hover:border-emerald-500 hover:text-emerald-700 transition font-medium active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
                 >
                   次へ
                 </Link>
