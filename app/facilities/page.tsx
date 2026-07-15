@@ -304,7 +304,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
     ),
   ) as string[];
 
-  const filteredFacilities = publishedFacilities.filter((facility) => {
+  const rawFilteredFacilities = publishedFacilities.filter((facility) => {
     let matchType = false;
     if (selectedType === "すべて") {
       matchType = true;
@@ -338,6 +338,56 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
       keyword === "" || target.includes(keyword.toLowerCase());
 
     return matchType && matchCity && matchArea && matchKeyword;
+  });
+
+  const cityOrder = ["福岡市", "北九州市", "春日市", "大野城市", "太宰府市"];
+  const filteredFacilities = [...rawFilteredFacilities].sort((a, b) => {
+    // 1. 市区町村の比較
+    const aCityIndex = cityOrder.indexOf(a.city || "");
+    const bCityIndex = cityOrder.indexOf(b.city || "");
+    const aOrder = aCityIndex !== -1 ? aCityIndex : 9999;
+    const bOrder = bCityIndex !== -1 ? bCityIndex : 9999;
+
+    if (aOrder !== bOrder) {
+      return aOrder - bOrder;
+    }
+
+    if ((a.city || "") !== (b.city || "")) {
+      return (a.city || "").localeCompare(b.city || "", "ja");
+    }
+
+    // 2. 区・エリアの比較
+    const aZone = a.ward || a.area || "";
+    const bZone = b.ward || b.area || "";
+
+    const fukuokaWards = ["東区", "博多区", "中央区", "南区", "城南区", "早良区", "西区"];
+    const kitakyushuWards = ["門司区", "小倉北区", "小倉南区", "若松区", "八幡東区", "八幡西区", "戸畑区"];
+
+    let aZoneOrder = 9999;
+    let bZoneOrder = 9999;
+
+    if (a.city === "福岡市" && b.city === "福岡市") {
+      const aIndex = fukuokaWards.indexOf(a.ward || "");
+      const bIndex = fukuokaWards.indexOf(b.ward || "");
+      aZoneOrder = aIndex !== -1 ? aIndex : 9999;
+      bZoneOrder = bIndex !== -1 ? bIndex : 9999;
+    } else if (a.city === "北九州市" && b.city === "北九州市") {
+      const aIndex = kitakyushuWards.indexOf(a.ward || "");
+      const bIndex = kitakyushuWards.indexOf(b.ward || "");
+      aZoneOrder = aIndex !== -1 ? aIndex : 9999;
+      bZoneOrder = bIndex !== -1 ? bIndex : 9999;
+    }
+
+    if (aZoneOrder !== bZoneOrder) {
+      return aZoneOrder - bZoneOrder;
+    }
+
+    if (aZone !== bZone) {
+      return aZone.localeCompare(bZone, "ja");
+    }
+
+    // 3. 事業所名の日本語自然比較
+    return (a.name || "").localeCompare(b.name || "", "ja");
   });
 
   return (
