@@ -262,6 +262,16 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
     pageTitle = `${selectedType}の事業所`;
   }
 
+  // 動的一覧見出しの決定
+  let listTitle = "介護事業所一覧";
+  if (locationName && selectedType !== "すべて") {
+    listTitle = `${locationName}の${selectedType}事業所一覧`;
+  } else if (locationName) {
+    listTitle = `${locationName}の介護事業所一覧`;
+  } else if (selectedType !== "すべて") {
+    listTitle = `${selectedType}の事業所一覧`;
+  }
+
   const publishedFacilities = facilities.filter(
     (facility) => facility.isPublished,
   );
@@ -334,7 +344,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
     <main id="top" className="min-h-screen bg-gray-50">
       <section className="bg-white border-b border-gray-200">
         <div className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-200">
-          <div className="max-w-5xl mx-auto px-4 py-10">
+          <div className="max-w-5xl mx-auto px-4 py-6">
             <nav
               aria-label="パンくず"
               className="flex flex-wrap items-center gap-2 text-sm text-gray-500"
@@ -415,22 +425,22 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
               )}
             </nav>
 
-            <p className="mt-6 text-sm font-semibold text-emerald-700">
+            <p className="mt-4 text-xs font-semibold text-emerald-700">
               福岡県内の介護事業所を探す
             </p>
 
-            <h1 className="mt-3 text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
+            <h1 className="mt-2 text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
               {pageTitle}
             </h1>
 
-            <form action="/facilities" method="GET" className="mt-8">
+            <form action="/facilities" method="GET" className="mt-4">
               <div className="flex flex-col md:flex-row gap-3">
                 <input
                   type="text"
                   name="keyword"
                   defaultValue={keyword}
                   placeholder="事業所名・エリア・住所で検索"
-                  className="w-full rounded-2xl border border-gray-300 bg-white px-5 py-4 text-base shadow-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+                  className="w-full rounded-2xl border border-gray-300 bg-white px-4 py-3 text-sm md:text-base shadow-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
                 />
 
                 {selectedType !== "すべて" && (
@@ -447,21 +457,17 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
 
                 <button
                   type="submit"
-                  className="rounded-2xl bg-emerald-600 px-6 py-4 text-white font-semibold shadow-sm transition hover:bg-emerald-700"
+                  className="rounded-2xl bg-emerald-600 px-5 py-3 text-sm md:text-base text-white font-semibold shadow-sm transition hover:bg-emerald-700 whitespace-nowrap"
                 >
                   検索
                 </button>
               </div>
             </form>
 
-            <p className="mt-5 text-base md:text-lg text-gray-600 leading-relaxed">
+            <p className="mt-3 text-xs md:text-sm text-gray-600 leading-relaxed">
               福岡県内の介護事業所情報を掲載しています。
               サービス種別やエリアを確認しながら、
               ご家族やご本人に合った事業所探しにお役立てください。
-            </p>
-
-            <p className="mt-4 text-sm text-gray-500">
-              掲載件数：{filteredFacilities.length}件
             </p>
           </div>
         </div>
@@ -664,8 +670,23 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
             </Link>
           </div>
         ) : (
-          <div className="mt-8 grid gap-5">
-            {filteredFacilities.map((facility) => {
+          <div>
+            {/* 一覧見出しと件数表示 */}
+            <div className="mt-8 mb-5 flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-gray-200 pb-4">
+              <div>
+                <h2 className="text-xl md:text-2xl font-bold text-gray-900">
+                  {listTitle}
+                </h2>
+              </div>
+              <div className="text-sm text-gray-600">
+                <span>全 </span>
+                <span className="text-lg font-bold text-emerald-700">{filteredFacilities.length}</span>
+                <span> 件</span>
+              </div>
+            </div>
+
+            <div className="grid gap-5">
+              {filteredFacilities.map((facility) => {
               const styles = typeStyles[facility.type || ""] || defaultStyle;
               const tags = normalizeTags(facility.tags);
 
@@ -743,6 +764,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                 </Link>
               );
             })}
+          </div>
           </div>
         )}
       </section>
