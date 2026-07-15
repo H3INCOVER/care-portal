@@ -8,7 +8,7 @@ export default function Footer() {
           {/* Left Column: Portal details and H3 Incover Network cards */}
           <div className="md:col-span-6 lg:col-span-7 space-y-8">
             <div>
-              <Link href="/" className="inline-flex items-center gap-3 font-black text-white group mb-4">
+              <Link href="/" className="inline-flex items-center gap-3 font-black text-white group mb-4 link-interactive">
                 <div className="w-[34px] h-[34px] rounded-full bg-white text-brand-black grid place-items-center text-xs font-bold tracking-wider group-hover:bg-brand-red group-hover:text-white transition-colors duration-200">
                   H3
                 </div>
@@ -33,7 +33,7 @@ export default function Footer() {
                   href="https://h3incover.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-red/30 hover:-translate-y-0.5 transition-all duration-200"
+                  className="block p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-red/30 hover:-translate-y-0.5 active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-brand-red/60 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200"
                 >
                   <div className="text-xs font-black text-white mb-1 flex items-center gap-1.5">
                     <span>🏠</span> H3 Incover 公式サイト
@@ -47,7 +47,7 @@ export default function Footer() {
                   href="https://info.h3incover.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-red/30 hover:-translate-y-0.5 transition-all duration-200"
+                  className="block p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-red/30 hover:-translate-y-0.5 active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-brand-red/60 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200"
                 >
                   <div className="text-xs font-black text-white mb-1 flex items-center gap-1.5">
                     <span>📰</span> H3 Incover INFO
@@ -61,7 +61,7 @@ export default function Footer() {
                   href="https://portal.h3incover.com"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-red/30 hover:-translate-y-0.5 transition-all duration-200"
+                  className="block p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-red/30 hover:-translate-y-0.5 active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-brand-red/60 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200"
                 >
                   <div className="text-xs font-black text-white mb-1 flex items-center gap-1.5">
                     <span>🏥</span> 介護制度ポータル
@@ -75,7 +75,7 @@ export default function Footer() {
                   href="https://h3incover.com/care/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-red/30 hover:-translate-y-0.5 transition-all duration-200"
+                  className="block p-4 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-brand-red/30 hover:-translate-y-0.5 active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-brand-red/60 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200"
                 >
                   <div className="text-xs font-black text-white mb-1 flex items-center gap-1.5">
                     <span>💻</span> 介護ホームページサービス
@@ -94,19 +94,19 @@ export default function Footer() {
               Navigation
             </span>
             <div className="flex flex-col gap-3 text-sm font-semibold text-gray-300">
-              <Link href="/" className="hover:text-white transition-colors duration-200 self-start">
+              <Link href="/" className="hover:text-white transition-colors duration-200 self-start link-interactive">
                 ホーム
               </Link>
-              <Link href="/care-news" className="hover:text-white transition-colors duration-200 self-start">
+              <Link href="/care-news" className="hover:text-white transition-colors duration-200 self-start link-interactive">
                 制度一覧
               </Link>
-              <Link href="/facilities" className="hover:text-white transition-colors duration-200 self-start">
+              <Link href="/facilities" className="hover:text-white transition-colors duration-200 self-start link-interactive">
                 介護事業所を探す
               </Link>
-              <Link href="/contact/edit" className="hover:text-white transition-colors duration-200 self-start">
+              <Link href="/contact/edit" className="hover:text-white transition-colors duration-200 self-start link-interactive">
                 掲載情報の修正
               </Link>
-              <Link href="/contact" className="hover:text-white transition-colors duration-200 self-start">
+              <Link href="/contact" className="hover:text-white transition-colors duration-200 self-start link-interactive">
                 お問い合わせ
               </Link>
             </div>
@@ -118,20 +118,20 @@ export default function Footer() {
               Legal
             </span>
             <div className="flex flex-col gap-3 text-sm font-semibold text-gray-300">
-              <Link href="/privacy" className="hover:text-white transition-colors duration-200 self-start">
+              <Link href="/privacy" className="hover:text-white transition-colors duration-200 self-start link-interactive">
                 プライバシーポリシー
               </Link>
-              <Link href="/terms" className="hover:text-white transition-colors duration-200 self-start">
+              <Link href="/terms" className="hover:text-white transition-colors duration-200 self-start link-interactive">
                 利用規約
               </Link>
-              <Link href="/about" className="hover:text-white transition-colors duration-200 self-start">
+              <Link href="/about" className="hover:text-white transition-colors duration-200 self-start link-interactive">
                 運営者情報
               </Link>
               <a
                 href="https://info.h3incover.com/legal"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-white transition-colors duration-200 self-start"
+                className="hover:text-white transition-colors duration-200 self-start link-interactive"
               >
                 特定商取引法に基づく表記
               </a>
@@ -143,7 +143,7 @@ export default function Footer() {
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500 font-semibold">
           <div>© 2026 H3 Incover</div>
           <div className="flex gap-4">
-            <Link href="/sitemap.xml" className="hover:text-white">
+            <Link href="/sitemap.xml" className="hover:text-white link-interactive">
               Sitemap
             </Link>
           </div>

@@ -30,3 +30,29 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@utility btn-primary {
+  @apply inline-flex items-center justify-center rounded-full bg-emerald-700 text-white font-semibold shadow-sm transition-all duration-100 ease-out cursor-pointer;
+  @apply hover:bg-emerald-800 hover:shadow-md;
+  @apply active:scale-[0.98];
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2;
+}
+
+@utility btn-secondary {
+  @apply inline-flex items-center justify-center rounded-full border border-gray-200 bg-white text-gray-800 font-semibold shadow-sm transition-all duration-100 ease-out cursor-pointer;
+  @apply hover:border-emerald-300 hover:text-emerald-700 hover:bg-emerald-50/20;
+  @apply active:scale-[0.98];
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2;
+}
+
+@utility link-interactive {
+  @apply transition-all duration-150 ease-out outline-none rounded-sm;
+  @apply focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary, .btn-secondary, .link-interactive {
+    transition: none !important;
+    transform: none !important;
+  }
+}
