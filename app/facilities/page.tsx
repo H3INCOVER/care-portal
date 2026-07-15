@@ -231,6 +231,37 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
   const selectedArea = params?.area || "すべて";
   const keyword = params?.keyword || "";
 
+  // 選択中の大分類（category）を自動解決する
+  let selectedCategory = "すべて";
+  if (selectedType !== "すべて") {
+    if (selectedType === "その他" || [
+      "訪問サービス",
+      "通所サービス",
+      "居宅・相談",
+      "入居・施設",
+      "短期入所",
+      "福祉用具"
+    ].includes(selectedType)) {
+      selectedCategory = selectedType;
+    } else {
+      const foundCategory = Object.keys(serviceCategoryMapping).find((key) =>
+        serviceCategoryMapping[key].includes(selectedType),
+      );
+      selectedCategory = foundCategory || "その他";
+    }
+  }
+
+  // 動的ページタイトルの決定
+  const locationName = selectedArea !== "すべて" ? selectedArea : (selectedCity !== "すべて" ? selectedCity : "");
+  let pageTitle = "介護事業所を探す";
+  if (locationName && selectedType !== "すべて") {
+    pageTitle = `${locationName}の${selectedType}事業所`;
+  } else if (locationName) {
+    pageTitle = `${locationName}の介護事業所`;
+  } else if (selectedType !== "すべて") {
+    pageTitle = `${selectedType}の事業所`;
+  }
+
   const publishedFacilities = facilities.filter(
     (facility) => facility.isPublished,
   );
@@ -306,20 +337,82 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
           <div className="max-w-5xl mx-auto px-4 py-10">
             <nav
               aria-label="パンくず"
-              className="flex flex-wrap items-center gap-2 text-sm"
+              className="flex flex-wrap items-center gap-2 text-sm text-gray-500"
             >
               <Link
                 href="/"
-                className="text-gray-500 hover:text-emerald-700 transition"
+                className="hover:text-emerald-700 transition"
               >
                 TOP
               </Link>
-
+              
               <span className="text-gray-300">＞</span>
+              
+              {selectedCity === "すべて" && selectedCategory === "すべて" ? (
+                <span className="text-gray-900 font-medium">介護事業所を探す</span>
+              ) : (
+                <Link
+                  href={createFacilitiesHref("すべて", "すべて", "すべて", keyword)}
+                  className="hover:text-emerald-700 transition"
+                >
+                  介護事業所を探す
+                </Link>
+              )}
 
-              <span className="text-gray-900 font-medium">
-                介護事業所を探す
-              </span>
+              {selectedCity !== "すべて" && (
+                <>
+                  <span className="text-gray-300">＞</span>
+                  {selectedArea === "すべて" && selectedCategory === "すべて" ? (
+                    <span className="text-gray-900 font-medium">{selectedCity}</span>
+                  ) : (
+                    <Link
+                      href={createFacilitiesHref(selectedType, selectedCity, "すべて", keyword)}
+                      className="hover:text-emerald-700 transition"
+                    >
+                      {selectedCity}
+                    </Link>
+                  )}
+                </>
+              )}
+
+              {selectedArea !== "すべて" && (
+                <>
+                  <span className="text-gray-300">＞</span>
+                  {selectedCategory === "すべて" ? (
+                    <span className="text-gray-900 font-medium">{selectedArea}</span>
+                  ) : (
+                    <Link
+                      href={createFacilitiesHref(selectedType, selectedCity, selectedArea, keyword)}
+                      className="hover:text-emerald-700 transition"
+                    >
+                      {selectedArea}
+                    </Link>
+                  )}
+                </>
+              )}
+
+              {selectedCategory !== "すべて" && (
+                <>
+                  <span className="text-gray-300">＞</span>
+                  {selectedType === selectedCategory ? (
+                    <span className="text-gray-900 font-medium">{selectedCategory}</span>
+                  ) : (
+                    <Link
+                      href={createFacilitiesHref(selectedCategory, selectedCity, selectedArea, keyword)}
+                      className="hover:text-emerald-700 transition"
+                    >
+                      {selectedCategory}
+                    </Link>
+                  )}
+                </>
+              )}
+
+              {selectedType !== "すべて" && selectedType !== selectedCategory && (
+                <>
+                  <span className="text-gray-300">＞</span>
+                  <span className="text-gray-900 font-medium">{selectedType}</span>
+                </>
+              )}
             </nav>
 
             <p className="mt-6 text-sm font-semibold text-emerald-700">
@@ -327,7 +420,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
             </p>
 
             <h1 className="mt-3 text-3xl md:text-5xl font-bold text-gray-900 tracking-tight">
-              福岡介護ポータル
+              {pageTitle}
             </h1>
 
             <form action="/facilities" method="GET" className="mt-8">
@@ -381,41 +474,84 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
               サービス種別
             </p>
 
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href={createFacilitiesHref(
-                  "すべて",
-                  selectedCity,
-                  selectedArea,
-                  keyword,
-                )}
-                className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
-                  selectedType === "すべて"
-                    ? "border-emerald-600 bg-emerald-600 text-white"
-                    : "border-gray-300 bg-white text-gray-700 hover:border-emerald-400 hover:text-emerald-700"
-                }`}
-              >
-                すべて
-              </Link>
-
-              {types.map((type) => (
+            <div className="flex flex-col gap-3">
+              {/* 第1階層：大分類 */}
+              <div className="flex flex-wrap gap-2">
                 <Link
-                  key={type}
                   href={createFacilitiesHref(
-                    type,
+                    "すべて",
                     selectedCity,
                     selectedArea,
                     keyword,
                   )}
                   className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
-                    selectedType === type
+                    selectedCategory === "すべて"
                       ? "border-emerald-600 bg-emerald-600 text-white"
                       : "border-gray-300 bg-white text-gray-700 hover:border-emerald-400 hover:text-emerald-700"
                   }`}
                 >
-                  {type}
+                  すべて
                 </Link>
-              ))}
+
+                {types.map((cat) => (
+                  <Link
+                    key={cat}
+                    href={createFacilitiesHref(
+                      cat,
+                      selectedCity,
+                      selectedArea,
+                      keyword,
+                    )}
+                    className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
+                      selectedCategory === cat
+                        ? "border-emerald-600 bg-emerald-600 text-white"
+                        : "border-gray-300 bg-white text-gray-700 hover:border-emerald-400 hover:text-emerald-700"
+                    }`}
+                  >
+                    {cat}
+                  </Link>
+                ))}
+              </div>
+
+              {/* 第2階層：具体的なサービス種別 */}
+              {selectedCategory !== "すべて" && selectedCategory !== "その他" && serviceCategoryMapping[selectedCategory] && (
+                <div className="pl-4 border-l-2 border-emerald-100 flex flex-wrap gap-2">
+                  <Link
+                    href={createFacilitiesHref(
+                      selectedCategory,
+                      selectedCity,
+                      selectedArea,
+                      keyword,
+                    )}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                      selectedType === selectedCategory
+                        ? "border-emerald-500 bg-emerald-50 text-emerald-700 font-semibold"
+                        : "border-gray-200 bg-gray-50 text-gray-600 hover:border-emerald-400 hover:text-emerald-700"
+                    }`}
+                  >
+                    {selectedCategory}すべて
+                  </Link>
+
+                  {serviceCategoryMapping[selectedCategory].map((subType) => (
+                    <Link
+                      key={subType}
+                      href={createFacilitiesHref(
+                        subType,
+                        selectedCity,
+                        selectedArea,
+                        keyword,
+                      )}
+                      className={`rounded-full border px-3 py-1.5 text-xs font-medium transition ${
+                        selectedType === subType
+                          ? "border-emerald-500 bg-emerald-50 text-emerald-700 font-semibold"
+                          : "border-gray-200 bg-gray-50 text-gray-600 hover:border-emerald-400 hover:text-emerald-700"
+                      }`}
+                    >
+                      {subType}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
