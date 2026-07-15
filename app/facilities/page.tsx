@@ -126,6 +126,51 @@ const typeStyles: Record<string, { icon: string; badge: string }> = {
   },
 };
 
+const serviceCategoryMapping: Record<string, string[]> = {
+  "訪問サービス": [
+    "訪問介護",
+    "訪問看護",
+    "訪問入浴介護",
+    "定期巡回・随時対応型訪問介護看護"
+  ],
+  "通所サービス": [
+    "通所介護",
+    "地域密着型通所介護",
+    "通所リハビリテーション"
+  ],
+  "居宅・相談": [
+    "居宅介護支援",
+    "居宅介護支援事業所",
+    "介護予防支援",
+    "介護予防支援事業所",
+    "小規模多機能型居宅介護"
+  ],
+  "入居・施設": [
+    "介護老人福祉施設",
+    "介護老人福祉施設（ユニット型）",
+    "地域密着型介護老人福祉施設",
+    "地域密着型特別養護老人ホーム",
+    "介護老人保健施設",
+    "介護医療院",
+    "認知症対応型共同生活介護",
+    "特定施設入居者生活介護",
+    "特定施設入居者生活介護（ユニット型）",
+    "軽費老人ホーム",
+    "住宅型有料老人ホーム",
+    "サービス付き高齢者向け住宅"
+  ],
+  "短期入所": [
+    "短期入所生活介護",
+    "短期入所生活介護（ユニット型）",
+    "短期入所療養介護",
+    "短期入所生活介護・療養介護（ショートステイ）",
+    "短期入所生活介護・療養介護（ショートステイ）（ユニット型）"
+  ],
+  "福祉用具": [
+    "福祉用具貸与"
+  ]
+};
+
 const defaultStyle = {
   icon: "bg-gray-100 text-gray-700",
   badge: "bg-gray-50 text-gray-700",
@@ -190,11 +235,15 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
     (facility) => facility.isPublished,
   );
 
-  const types = Array.from(
-    new Set(
-      publishedFacilities.map((facility) => facility.type).filter(Boolean),
-    ),
-  ) as string[];
+  const types = [
+    "訪問サービス",
+    "通所サービス",
+    "居宅・相談",
+    "入居・施設",
+    "短期入所",
+    "福祉用具",
+    "その他"
+  ];
 
   const cities = Array.from(
     new Set(
@@ -215,8 +264,18 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
   ) as string[];
 
   const filteredFacilities = publishedFacilities.filter((facility) => {
-    const matchType =
-      selectedType === "すべて" || facility.type === selectedType;
+    let matchType = false;
+    if (selectedType === "すべて") {
+      matchType = true;
+    } else if (selectedType === "その他") {
+      const allMappedTypes = Object.values(serviceCategoryMapping).flat();
+      matchType = !allMappedTypes.includes(facility.type || "");
+    } else if (selectedType in serviceCategoryMapping) {
+      matchType = serviceCategoryMapping[selectedType].includes(facility.type || "");
+    } else {
+      // 既存のURLクエリの互換性維持
+      matchType = facility.type === selectedType;
+    }
 
     const matchCity =
       selectedCity === "すべて" || facility.city === selectedCity;
