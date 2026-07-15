@@ -24,6 +24,7 @@ type PageProps = {
     city?: string;
     area?: string;
     keyword?: string;
+    page?: string;
   }>;
 };
 
@@ -190,6 +191,7 @@ function createFacilitiesHref(
   city: string,
   area: string,
   keyword?: string,
+  page?: number,
 ) {
   const params = new URLSearchParams();
 
@@ -209,9 +211,31 @@ function createFacilitiesHref(
     params.set("keyword", keyword);
   }
 
+  if (page && page > 1) {
+    params.set("page", String(page));
+  }
+
   const query = params.toString();
 
   return query ? `/facilities?${query}` : "/facilities";
+}
+
+function getPageRange(current: number, total: number) {
+  const range: (number | string)[] = [];
+  const delta = 2; // Show 2 pages around current page
+
+  for (let i = 1; i <= total; i++) {
+    if (
+      i === 1 ||
+      i === total ||
+      (i >= current - delta && i <= current + delta)
+    ) {
+      range.push(i);
+    } else if (range[range.length - 1] !== "...") {
+      range.push("...");
+    }
+  }
+  return range;
 }
 
 function displayArea(area?: string, city?: string) {
@@ -389,6 +413,37 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
     // 3. 事業所名の日本語自然比較
     return (a.name || "").localeCompare(b.name || "", "ja");
   });
+
+  // ページ番号の解決とバリデーション
+  let currentPage = 1;
+  if (params?.page) {
+    const parsedPage = parseInt(String(params.page), 10);
+    if (!isNaN(parsedPage) && parsedPage > 0) {
+      currentPage = parsedPage;
+    }
+  }
+
+  const ITEMS_PER_PAGE = 20;
+  const totalCount = filteredFacilities.length;
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE) || 1;
+
+  if (currentPage > totalPages) {
+    currentPage = totalPages;
+  }
+
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedFacilities = filteredFacilities.slice(startIndex, endIndex);
+
+  const displayStartIndex = totalCount > 0 ? startIndex + 1 : 0;
+  const displayEndIndex = Math.min(startIndex + ITEMS_PER_PAGE, totalCount);
+
+  const countLabel = totalCount === 0
+    ? "0 件"
+    : (displayStartIndex === displayEndIndex
+        ? `全 ${totalCount} 件中 ${displayStartIndex} 件を表示`
+        : `全 ${totalCount} 件中 ${displayStartIndex}〜${displayEndIndex} 件を表示`
+      );
 
   return (
     <main id="top" className="min-h-screen bg-gray-50">
@@ -729,14 +784,12 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                 </h2>
               </div>
               <div className="text-sm text-gray-600">
-                <span>全 </span>
-                <span className="text-lg font-bold text-emerald-700">{filteredFacilities.length}</span>
-                <span> 件</span>
+                <span className="font-semibold">{countLabel}</span>
               </div>
             </div>
 
             <div className="grid gap-5">
-              {filteredFacilities.map((facility) => {
+              {paginatedFacilities.map((facility) => {
               const styles = typeStyles[facility.type || ""] || defaultStyle;
               const tags = normalizeTags(facility.tags);
 
@@ -815,6 +868,67 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
               );
             })}
           </div>
+
+          {/* ページネーション UI */}
+          {totalPages > 1 && (
+            <div className="mt-10 flex items-center justify-center gap-1.5 text-sm">
+              {/* 前へボタン */}
+              {currentPage > 1 ? (
+                <Link
+                  href={createFacilitiesHref(selectedType, selectedCity, selectedArea, keyword, currentPage - 1)}
+                  className="rounded-xl border border-gray-300 bg-white px-3 py-2 text-gray-700 hover:border-emerald-500 hover:text-emerald-700 transition font-medium"
+                >
+                  前へ
+                </Link>
+              ) : (
+                <span className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-gray-400 cursor-not-allowed">
+                  前へ
+                </span>
+              )}
+
+              {/* 各ページ番号 */}
+              {getPageRange(currentPage, totalPages).map((p, idx) => {
+                if (p === "...") {
+                  return (
+                    <span key={`dots-${idx}`} className="px-2 text-gray-400 font-semibold">
+                      ...
+                    </span>
+                  );
+                }
+
+                const pageNum = p as number;
+                const isCurrent = pageNum === currentPage;
+
+                return (
+                  <Link
+                    key={`page-${pageNum}`}
+                    href={createFacilitiesHref(selectedType, selectedCity, selectedArea, keyword, pageNum)}
+                    className={`rounded-xl px-3.5 py-2 font-medium transition ${
+                      isCurrent
+                        ? "bg-emerald-600 text-white shadow-sm"
+                        : "border border-gray-300 bg-white text-gray-700 hover:border-emerald-500 hover:text-emerald-700"
+                    }`}
+                  >
+                    {pageNum}
+                  </Link>
+                );
+              })}
+
+              {/* 次へボタン */}
+              {currentPage < totalPages ? (
+                <Link
+                  href={createFacilitiesHref(selectedType, selectedCity, selectedArea, keyword, currentPage + 1)}
+                  className="rounded-xl border border-gray-300 bg-white px-3 py-2 text-gray-700 hover:border-emerald-500 hover:text-emerald-700 transition font-medium"
+                >
+                  次へ
+                </Link>
+              ) : (
+                <span className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-gray-400 cursor-not-allowed">
+                  次へ
+                </span>
+              )}
+            </div>
+          )}
           </div>
         )}
       </section>
