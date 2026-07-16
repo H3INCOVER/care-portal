@@ -109,14 +109,14 @@ export default async function HomePage() {
           <div className="mt-10 flex flex-wrap gap-4">
             <Link
               href="/facilities"
-              className="inline-flex items-center justify-center rounded-full bg-emerald-700 px-6 py-4 text-white font-semibold hover:bg-emerald-800 transition"
+              className="btn-primary px-6 py-4"
             >
               介護事業所をさがす
             </Link>
 
             <Link
               href="/contact/edit"
-              className="inline-flex items-center justify-center rounded-full border border-gray-200 bg-white px-6 py-4 text-gray-800 font-semibold hover:border-emerald-300 transition"
+              className="btn-secondary px-6 py-4"
             >
               掲載情報の修正・追加掲載
             </Link>
@@ -156,7 +156,7 @@ export default async function HomePage() {
             <Link
               key={city}
               href={`/facilities?city=${encodeURIComponent(city)}`}
-              className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition"
+              className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
             >
               {city}
             </Link>
@@ -179,7 +179,7 @@ export default async function HomePage() {
 
           <Link
             href="/facilities"
-            className="inline-flex items-center rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 transition"
+            className="inline-flex items-center rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
           >
             一覧を見る →
           </Link>
@@ -196,7 +196,7 @@ export default async function HomePage() {
                   <Link
                     key={type}
                     href={`/facilities?type=${encodeURIComponent(type)}`}
-                    className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition"
+                    className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
                   >
                     {type}
                   </Link>
@@ -221,7 +221,7 @@ export default async function HomePage() {
                     <Link
                       key={type}
                       href={`/facilities?type=${encodeURIComponent(type)}`}
-                      className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition"
+                      className="rounded-2xl border border-gray-200 bg-white px-5 py-4 font-semibold text-gray-800 hover:border-emerald-300 hover:bg-emerald-50 transition active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
                     >
                       {displayLabel}
                     </Link>
@@ -248,7 +248,7 @@ export default async function HomePage() {
 
           <Link
             href="/facilities"
-            className="inline-flex items-center rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 transition"
+            className="inline-flex items-center rounded-full border border-emerald-200 bg-white px-4 py-2 text-sm font-semibold text-emerald-700 hover:bg-emerald-50 transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
           >
             一覧を見る →
           </Link>
@@ -259,7 +259,7 @@ export default async function HomePage() {
             <Link
               key={facility.facilityId}
               href={`/facilities/${facility.slug}`}
-              className="group rounded-2xl border border-gray-200 bg-white p-5 hover:border-emerald-300 hover:shadow-md transition"
+              className="group rounded-2xl border border-gray-200 bg-white p-5 hover:border-emerald-300 hover:shadow-md transition active:scale-[0.995] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
             >
               <div className="flex items-center gap-3">
                 <div className="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-2xl">
@@ -292,7 +292,7 @@ export default async function HomePage() {
 
         <Link
           href="/facilities"
-          className="mt-8 inline-flex md:hidden text-sm font-semibold text-emerald-700 hover:underline"
+          className="mt-8 inline-flex md:hidden text-sm font-semibold text-emerald-700 hover:underline link-interactive"
         >
           一覧を見る →
         </Link>
@@ -316,7 +316,7 @@ export default async function HomePage() {
 
           <Link
             href="/contact/edit"
-            className="mt-8 inline-flex items-center justify-center rounded-full bg-white px-6 py-4 font-semibold text-emerald-700 hover:bg-emerald-50 transition"
+            className="mt-8 inline-flex items-center justify-center rounded-full border border-transparent bg-white px-6 py-4 font-semibold text-emerald-700 transition active:scale-[0.98] hover:bg-emerald-50 hover:border-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2"
           >
             掲載情報について問い合わせる
           </Link>

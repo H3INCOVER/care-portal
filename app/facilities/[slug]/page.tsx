@@ -79,7 +79,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
           >
             <Link
               href="/"
-              className="text-gray-500 hover:text-emerald-700 transition"
+              className="text-gray-500 hover:text-emerald-700 transition link-interactive"
             >
               TOP
             </Link>
@@ -88,7 +88,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
 
             <Link
               href="/facilities"
-              className="text-gray-500 hover:text-emerald-700 transition"
+              className="text-gray-500 hover:text-emerald-700 transition link-interactive"
             >
               介護事業所を探す
             </Link>
@@ -99,7 +99,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
 
                 <Link
                   href={`/facilities?area=${encodeURIComponent(facility.area)}`}
-                  className="text-gray-500 hover:text-emerald-700 transition"
+                  className="text-gray-500 hover:text-emerald-700 transition link-interactive"
                 >
                   {facility.city ? facility.area.replace(facility.city, "") : facility.area}
                 </Link>
@@ -203,7 +203,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
                         href={googleMapUrl}
                         target="_blank"
                         rel="noreferrer"
-                        className="mt-2 inline-flex text-sm font-semibold text-emerald-700 hover:underline"
+                        className="mt-2 inline-flex text-sm font-semibold text-emerald-700 hover:underline link-interactive"
                       >
                         Googleマップで見る →
                       </a>
@@ -267,7 +267,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
                     href={`/facilities?area=${encodeURIComponent(
                       facility.area || "",
                     )}`}
-                    className="hidden md:inline-flex text-sm font-semibold text-emerald-700 hover:underline"
+                    className="hidden md:inline-flex text-sm font-semibold text-emerald-700 hover:underline link-interactive"
                   >
                     一覧で見る →
                   </Link>
@@ -278,7 +278,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
                     <Link
                       key={item.facilityId}
                       href={`/facilities/${item.slug}`}
-                      className="rounded-xl border border-gray-200 p-4 hover:border-emerald-300 hover:bg-emerald-50/40 transition"
+                      className="rounded-xl border border-gray-200 p-4 hover:border-emerald-300 hover:bg-emerald-50/40 transition active:scale-[0.995] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div>
@@ -300,7 +300,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
                   href={`/facilities?area=${encodeURIComponent(
                     facility.area || "",
                   )}`}
-                  className="mt-5 inline-flex md:hidden text-sm font-semibold text-emerald-700 hover:underline"
+                  className="mt-5 inline-flex md:hidden text-sm font-semibold text-emerald-700 hover:underline link-interactive"
                 >
                   一覧で見る →
                 </Link>
@@ -318,7 +318,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
                     <Link
                       key={item.facilityId}
                       href={`/facilities/${item.slug}`}
-                      className="rounded-xl border border-gray-200 p-4 hover:border-emerald-300 hover:bg-emerald-50/40 transition"
+                      className="rounded-xl border border-gray-200 p-4 hover:border-emerald-300 hover:bg-emerald-50/40 transition active:scale-[0.995] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1"
                     >
                       <p className="font-bold text-gray-900">{item.name}</p>
                       <p className="mt-1 text-sm text-gray-500">
@@ -339,7 +339,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
                 {facility.tel && (
                   <a
                     href={`tel:${facility.tel}`}
-                    className="flex items-center justify-center rounded-full bg-emerald-700 px-5 py-3 text-white font-semibold hover:bg-emerald-800 transition"
+                    className="btn-primary w-full px-5 py-3"
                   >
                     電話する
                   </a>
@@ -350,7 +350,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
                     href={facility.website}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-center rounded-full border border-gray-200 bg-white px-5 py-3 text-gray-800 font-semibold hover:border-emerald-300 transition"
+                    className="btn-secondary w-full px-5 py-3"
                   >
                     公式サイトを見る
                   </a>
@@ -361,7 +361,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
                     href={googleMapUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-center rounded-full border border-gray-200 bg-white px-5 py-3 text-gray-800 font-semibold hover:border-emerald-300 transition"
+                    className="btn-secondary w-full px-5 py-3"
                   >
                     地図を見る
                   </a>
@@ -369,7 +369,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
 
                 <Link
                   href={`/contact/edit?facility=${facility.slug}`}
-                  className="flex items-center justify-center rounded-full border border-gray-200 bg-white px-5 py-3 text-gray-800 font-semibold hover:border-emerald-300 transition"
+                  className="btn-secondary w-full px-5 py-3"
                 >
                   掲載情報の修正・追加掲載
                 </Link>
