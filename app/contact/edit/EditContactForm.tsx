@@ -111,43 +111,47 @@ export default function EditContactForm({ initialFacilityName }: Props) {
           </div>
 
           <div>
-            <label className="block font-semibold mb-2">事業所名（必須）</label>
+            <label htmlFor="facilityName" className="block font-semibold mb-2">事業所名（必須）</label>
             <input
+              id="facilityName"
               type="text"
               value={facility}
               onChange={(e) => setFacility(e.target.value)}
               required
-              className="w-full border rounded-xl px-4 py-3"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
             />
           </div>
 
           <div>
-            <label className="block font-semibold mb-2">ご担当者名</label>
+            <label htmlFor="contactName" className="block font-semibold mb-2">ご担当者名</label>
             <input
+              id="contactName"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full border rounded-xl px-4 py-3"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
             />
           </div>
 
           <div>
-            <label className="block font-semibold mb-2">メールアドレス（必須）</label>
+            <label htmlFor="contactEmail" className="block font-semibold mb-2">メールアドレス（必須）</label>
             <input
+              id="contactEmail"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full border rounded-xl px-4 py-3"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
             />
           </div>
 
           <div>
-            <label className="block font-semibold mb-2">お問い合わせ内容</label>
+            <label htmlFor="contactCategory" className="block font-semibold mb-2">お問い合わせ内容</label>
             <select
+              id="contactCategory"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full border rounded-xl px-4 py-3"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100 bg-white"
             >
               <option>掲載内容の修正</option>
               <option>掲載の削除</option>
@@ -158,33 +162,38 @@ export default function EditContactForm({ initialFacilityName }: Props) {
           </div>
 
           <div>
-            <label className="block font-semibold mb-2">詳細内容</label>
+            <label htmlFor="contactMessage" className="block font-semibold mb-2">詳細内容</label>
             <textarea
+              id="contactMessage"
               rows={5}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              className="w-full border rounded-xl px-4 py-3"
+              className="w-full border border-gray-300 rounded-xl px-4 py-3 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
             />
           </div>
 
           {status && (
-            <div className="rounded-2xl bg-green-50 border border-green-200 px-5 py-4 text-green-800">
-              <p className="font-bold">お問い合わせありがとうございました</p>
-              <p className="mt-1 text-sm">{status}</p>
-
-              {status.includes("送信しました") && (
+            status.includes("送信しました") ? (
+              <div className="rounded-2xl bg-green-50 border border-green-200 px-5 py-4 text-green-800">
+                <p className="font-bold">お問い合わせありがとうございました</p>
+                <p className="mt-1 text-sm">{status}</p>
                 <p className="mt-2 text-xs text-green-700">
                   3秒後にトップページへ戻ります...
                 </p>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="rounded-2xl bg-red-50 border border-red-200 px-5 py-4 text-red-800" role="alert">
+                <p className="font-bold">入力内容をご確認ください</p>
+                <p className="mt-1 text-sm">{status}</p>
+              </div>
+            )
           )}
 
           {!status.includes("送信しました") && (
             <button
               type="submit"
               disabled={sending}
-              className="w-full bg-green-700 text-white py-3 rounded-full font-semibold disabled:opacity-50"
+              className="btn-primary w-full py-3.5 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {sending ? "送信中..." : "送信する"}
             </button>
