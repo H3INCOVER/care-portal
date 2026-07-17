@@ -321,7 +321,7 @@ export default function CareNewsPage() {
           <div className="mt-6">
             <Link
               href="/care-news/about"
-              className="text-sm font-bold text-red-700 underline underline-offset-4"
+              className="text-sm font-bold text-red-700 hover:text-red-800 underline underline-offset-4 link-interactive"
             >
               作った意図と使い方を見る
             </Link>
