@@ -113,7 +113,7 @@ export function getFacilities(): Facility[] {
       website: row.website,
       serviceArea: row.serviceArea,
 
-      isPublished: row.isPublished === "true",
+      isPublished: row.isPublished ? row.isPublished.toLowerCase() === "true" : false,
 
       contactStatus: row.contactStatus,
 
