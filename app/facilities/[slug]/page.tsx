@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getFacilities } from "@/lib/facilities";
+import { getServiceTypeStyle } from "@/lib/service-types";
 
 type PageProps = {
   params: Promise<{
@@ -42,6 +43,7 @@ export default async function FacilityDetailPage({ params }: PageProps) {
     notFound();
   }
 
+  const styles = getServiceTypeStyle(facility.type);
   const tags = normalizeTags(facility.tags);
   const googleMapUrl = createGoogleMapUrl(facility.address, facility.name);
 
@@ -112,13 +114,13 @@ export default async function FacilityDetailPage({ params }: PageProps) {
           </nav>
 
           <div className="mt-6 flex flex-col md:flex-row md:items-start gap-5">
-            <div className="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-3xl shrink-0">
-              {facility.icon || "🏠"}
+            <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shrink-0 ${styles.icon}`}>
+              {facility.icon || styles.symbol || "🏠"}
             </div>
 
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700">
+                <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${styles.badge}`}>
                   {facility.type || "サービス種別未設定"}
                 </span>
 

@@ -1,5 +1,11 @@
 import Link from "next/link";
 import { getFacilities } from "@/lib/facilities";
+import {
+  serviceCategoryMapping,
+  serviceCategories,
+  getServiceCategory,
+  getServiceTypeStyle,
+} from "@/lib/service-types";
 
 type Facility = {
   facilityId: string;
@@ -26,155 +32,6 @@ type PageProps = {
     keyword?: string;
     page?: string;
   }>;
-};
-
-const typeStyles: Record<string, { icon: string; badge: string }> = {
-  訪問介護: {
-    icon: "bg-emerald-100 text-emerald-700",
-    badge: "bg-emerald-50 text-emerald-700",
-  },
-  居宅介護支援: {
-    icon: "bg-amber-100 text-amber-700",
-    badge: "bg-amber-50 text-amber-700",
-  },
-  通所介護: {
-    icon: "bg-orange-100 text-orange-700",
-    badge: "bg-orange-50 text-orange-700",
-  },
-  訪問看護: {
-    icon: "bg-sky-100 text-sky-700",
-    badge: "bg-sky-50 text-sky-700",
-  },
-  福祉用具貸与: {
-    icon: "bg-violet-100 text-violet-700",
-    badge: "bg-violet-50 text-violet-700",
-  },
-  住宅型有料老人ホーム: {
-    icon: "bg-rose-100 text-rose-700",
-    badge: "bg-rose-50 text-rose-700",
-  },
-  介護老人福祉施設: {
-    icon: "bg-rose-100 text-rose-700",
-    badge: "bg-rose-50 text-rose-700",
-  },
-  介護老人保健施設: {
-    icon: "bg-sky-100 text-sky-700",
-    badge: "bg-sky-50 text-sky-700",
-  },
-  小規模多機能型居宅介護: {
-    icon: "bg-orange-100 text-orange-700",
-    badge: "bg-orange-50 text-orange-700",
-  },
-  認知症対応型共同生活介護: {
-    icon: "bg-emerald-100 text-emerald-700",
-    badge: "bg-emerald-50 text-emerald-700",
-  },
-  特定施設入居者生活介護: {
-    icon: "bg-rose-100 text-rose-700",
-    badge: "bg-rose-50 text-rose-700",
-  },
-  介護予防支援: {
-    icon: "bg-amber-100 text-amber-700",
-    badge: "bg-amber-50 text-amber-700",
-  },
-  訪問入浴介護: {
-    icon: "bg-emerald-100 text-emerald-700",
-    badge: "bg-emerald-50 text-emerald-700",
-  },
-  通所リハビリテーション: {
-    icon: "bg-orange-100 text-orange-700",
-    badge: "bg-orange-50 text-orange-700",
-  },
-  短期入所生活介護: {
-    icon: "bg-rose-100 text-rose-700",
-    badge: "bg-rose-50 text-rose-700",
-  },
-  短期入所療養介護: {
-    icon: "bg-rose-100 text-rose-700",
-    badge: "bg-rose-50 text-rose-700",
-  },
-  地域密着型介護老人福祉施設: {
-    icon: "bg-rose-100 text-rose-700",
-    badge: "bg-rose-50 text-rose-700",
-  },
-  介護医療院: {
-    icon: "bg-sky-100 text-sky-700",
-    badge: "bg-sky-50 text-sky-700",
-  },
-  "定期巡回・随時対応型訪問介護看護": {
-    icon: "bg-emerald-100 text-emerald-700",
-    badge: "bg-emerald-50 text-emerald-700",
-  },
-  地域密着型通所介護: {
-    icon: "bg-orange-100 text-orange-700",
-    badge: "bg-orange-50 text-orange-700",
-  },
-  軽費老人ホーム: {
-    icon: "bg-rose-100 text-rose-700",
-    badge: "bg-rose-50 text-rose-700",
-  },
-  サービス付き高齢者向け住宅: {
-    icon: "bg-rose-100 text-rose-700",
-    badge: "bg-rose-50 text-rose-700",
-  },
-  "介護老人福祉施設（ユニット型）": {
-    icon: "bg-rose-100 text-rose-700",
-    badge: "bg-rose-50 text-rose-700",
-  },
-  "特定施設入居者生活介護（ユニット型）": {
-    icon: "bg-rose-100 text-rose-700",
-    badge: "bg-rose-50 text-rose-700",
-  },
-};
-
-const serviceCategoryMapping: Record<string, string[]> = {
-  "訪問サービス": [
-    "訪問介護",
-    "訪問看護",
-    "訪問入浴介護",
-    "定期巡回・随時対応型訪問介護看護"
-  ],
-  "通所サービス": [
-    "通所介護",
-    "地域密着型通所介護",
-    "通所リハビリテーション"
-  ],
-  "居宅・相談": [
-    "居宅介護支援",
-    "居宅介護支援事業所",
-    "介護予防支援",
-    "介護予防支援事業所",
-    "小規模多機能型居宅介護"
-  ],
-  "入居・施設": [
-    "介護老人福祉施設",
-    "介護老人福祉施設（ユニット型）",
-    "地域密着型介護老人福祉施設",
-    "地域密着型特別養護老人ホーム",
-    "介護老人保健施設",
-    "介護医療院",
-    "認知症対応型共同生活介護",
-    "特定施設入居者生活介護",
-    "特定施設入居者生活介護（ユニット型）",
-    "軽費老人ホーム",
-    "住宅型有料老人ホーム",
-    "サービス付き高齢者向け住宅"
-  ],
-  "短期入所": [
-    "短期入所生活介護",
-    "短期入所生活介護（ユニット型）",
-    "短期入所療養介護",
-    "短期入所生活介護・療養介護（ショートステイ）",
-    "短期入所生活介護・療養介護（ショートステイ）（ユニット型）"
-  ],
-  "福祉用具": [
-    "福祉用具貸与"
-  ]
-};
-
-const defaultStyle = {
-  icon: "bg-gray-100 text-gray-700",
-  badge: "bg-gray-50 text-gray-700",
 };
 
 function normalizeTags(tags: string[] | string | undefined) {
@@ -258,20 +115,10 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
   // 選択中の大分類（category）を自動解決する
   let selectedCategory = "すべて";
   if (selectedType !== "すべて") {
-    if (selectedType === "その他" || [
-      "訪問サービス",
-      "通所サービス",
-      "居宅・相談",
-      "入居・施設",
-      "短期入所",
-      "福祉用具"
-    ].includes(selectedType)) {
+    if (selectedType === "その他" || serviceCategories.includes(selectedType)) {
       selectedCategory = selectedType;
     } else {
-      const foundCategory = Object.keys(serviceCategoryMapping).find((key) =>
-        serviceCategoryMapping[key].includes(selectedType),
-      );
-      selectedCategory = foundCategory || "その他";
+      selectedCategory = getServiceCategory(selectedType);
     }
   }
 
@@ -300,15 +147,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
     (facility) => facility.isPublished,
   );
 
-  const types = [
-    "訪問サービス",
-    "通所サービス",
-    "居宅・相談",
-    "入居・施設",
-    "短期入所",
-    "福祉用具",
-    "その他"
-  ];
+  const types = serviceCategories;
 
   const cities = Array.from(
     new Set(
@@ -790,7 +629,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
 
             <div className="grid gap-5">
               {paginatedFacilities.map((facility) => {
-              const styles = typeStyles[facility.type || ""] || defaultStyle;
+              const styles = getServiceTypeStyle(facility.type);
               const tags = normalizeTags(facility.tags);
 
               return (
@@ -804,7 +643,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                       <div
                         className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shrink-0 ${styles.icon}`}
                       >
-                        {facility.icon || "🏠"}
+                        {facility.icon || styles.symbol || "🏠"}
                       </div>
 
                       <div className="flex-1 min-w-0">
