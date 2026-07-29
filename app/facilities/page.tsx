@@ -6,6 +6,8 @@ import {
   getServiceCategory,
   getServiceTypeStyle,
 } from "@/lib/service-types";
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 type Facility = {
   facilityId: string;
@@ -33,6 +35,36 @@ type PageProps = {
     page?: string;
   }>;
 };
+
+export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
+  const params = await searchParams;
+  
+  // クエリパラメータのいずれかが「すべて」や「空」以外で存在するかチェック
+  const hasParams = params && Object.keys(params).some(key => {
+    const val = params[key as keyof typeof params];
+    return val !== undefined && val !== "" && val !== "すべて";
+  });
+
+  const canonicalUrl = "https://portal.h3incover.com/facilities";
+
+  if (hasParams) {
+    return {
+      robots: {
+        index: false,
+        follow: true,
+      },
+      alternates: {
+        canonical: canonicalUrl,
+      },
+    };
+  }
+
+  return {
+    alternates: {
+      canonical: canonicalUrl,
+    },
+  };
+}
 
 function normalizeTags(tags: string[] | string | undefined) {
   if (Array.isArray(tags)) return tags;
@@ -172,13 +204,26 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
     if (selectedType === "すべて") {
       matchType = true;
     } else if (selectedType === "その他") {
-      const allMappedTypes = Object.values(serviceCategoryMapping).flat();
+      const allMappedTypes = Object.values(serviceCategoryMapping)
+        .flatMap((groups) => groups.flatMap((g) => g.types));
       matchType = !allMappedTypes.includes(facility.type || "");
     } else if (selectedType in serviceCategoryMapping) {
-      matchType = serviceCategoryMapping[selectedType].includes(facility.type || "");
+      const categoryTypes = serviceCategoryMapping[selectedType]
+        .flatMap((group) => group.types);
+      matchType = categoryTypes.includes(facility.type || "");
     } else {
-      // 既存のURLクエリの互換性維持
-      matchType = facility.type === selectedType;
+      // 中分類（表示名）での絞り込み。表示名(label)から types を逆引きする
+      let groupTypes: string[] = [selectedType];
+      for (const category of Object.keys(serviceCategoryMapping)) {
+        const foundGroup = serviceCategoryMapping[category].find(
+          (g) => g.label === selectedType
+        );
+        if (foundGroup) {
+          groupTypes = foundGroup.types;
+          break;
+        }
+      }
+      matchType = groupTypes.includes(facility.type || "");
     }
 
     const matchCity =
@@ -256,10 +301,12 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
   // ページ番号の解決とバリデーション
   let currentPage = 1;
   if (params?.page) {
-    const parsedPage = parseInt(String(params.page), 10);
-    if (!isNaN(parsedPage) && parsedPage > 0) {
-      currentPage = parsedPage;
+    const pageStr = String(params.page);
+    const parsedPage = Number(pageStr);
+    if (isNaN(parsedPage) || !Number.isInteger(parsedPage) || parsedPage < 1 || String(parsedPage) !== pageStr) {
+      notFound();
     }
+    currentPage = parsedPage;
   }
 
   const ITEMS_PER_PAGE = 20;
@@ -267,7 +314,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
   const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE) || 1;
 
   if (currentPage > totalPages) {
-    currentPage = totalPages;
+    notFound();
   }
 
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -482,22 +529,22 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                     {selectedCategory}すべて
                   </Link>
 
-                  {serviceCategoryMapping[selectedCategory].map((subType) => (
+                  {serviceCategoryMapping[selectedCategory].map((group) => (
                     <Link
-                      key={subType}
+                      key={group.label}
                       href={createFacilitiesHref(
-                        subType,
+                        group.label,
                         selectedCity,
                         selectedArea,
                         keyword,
                       )}
                       className={`rounded-full border px-3 py-1.5 text-xs font-medium transition active:scale-[0.95] active:shadow-inner active:brightness-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-1 ${
-                        selectedType === subType
+                        selectedType === group.label
                           ? "border-emerald-500 bg-emerald-50 text-emerald-700 font-semibold"
                           : "border-gray-200 bg-gray-50 text-gray-600 hover:border-emerald-400 hover:text-emerald-700"
                       }`}
                     >
-                      {subType}
+                      {group.label}
                     </Link>
                   ))}
                 </div>
