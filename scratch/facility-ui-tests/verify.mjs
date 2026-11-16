@@ -28,6 +28,8 @@ function load(file, overrides = {}) {
 const real = load('lib/facilities.ts').getFacilities();
 const afterImport = process.argv.includes('--after-import');
 const styles = load('lib/service-types.ts');
+const areaData = JSON.parse(fs.readFileSync('data/area-readings/itoshima.json', 'utf8'));
+const areaHelpers = load('lib/area-readings.ts', { '@/data/area-readings/itoshima.json': areaData });
 const cases = [
   ['訪問リハビリテーション', '訪問サービス', '🚶', 'sky'],
   ['短期入所療養介護（介護老人保健施設）', '短期入所', '🛌', 'rose'],
@@ -43,6 +45,7 @@ for (const [type, category, symbol, color] of cases) {
 assert.equal(styles.getServiceCategory('未登録種別'), 'その他');
 let fixtures = real;
 const overrides = {
+  '@/lib/area-readings': areaHelpers,
   '@/lib/facilities': { getFacilities: () => fixtures }, '@/lib/service-types': styles,
   'next/navigation': { notFound },
   'next/link': ({ children, href }) => React.createElement('a', { href }, children),
@@ -72,6 +75,35 @@ for (const slug of ['test-hidden', 'test-absent']) {
   }
 }
 fixtures = real;
+const areaNames = html => {
+  const group = html.match(/エリア<\/p><div class="flex flex-wrap gap-3">([\s\S]*?)<\/div>/)?.[1];
+  assert.ok(group, 'area selector exists');
+  return [...group.matchAll(/<a href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(match => ({
+    area: new URLSearchParams(match[1].replaceAll('&amp;', '&').split('?')[1]).get('area') || 'すべて',
+    body: match[2],
+  }));
+};
+const expectedTowns = '有田 有田中央 池田 井田 伊都の杜 浦志 潤 荻浦 加布里 神在西 神在東 志登 篠原西 篠原東 志摩井田原 志摩稲留 志摩久家 志摩小富士 志摩初 志摩師吉 高上 高田 富 二丈武 二丈田中 二丈浜窪 二丈深江 二丈福井 二丈松末西 波多江 波多江駅北 波多江駅南 福吉 前原 前原駅南 前原北 前原中央 前原西 前原東 南風台'.split(' ');
+if (afterImport) {
+  const areaHtml = renderToStaticMarkup(await listing.default({ searchParams: Promise.resolve({ city: '糸島市' }) }));
+  const buttons = areaNames(areaHtml);
+  assert.equal(buttons.length, 41);
+  assert.equal(buttons[0].area, 'すべて');
+  assert.ok(!buttons[0].body.includes('<span'));
+  assert.deepEqual(buttons.slice(1).map(b => b.area), expectedTowns.map(t => '糸島市' + t));
+  for (const button of buttons.slice(1)) assert.ok(button.body.includes(areaData.readings[button.area]));
+  for (const city of new Set(real.map(r => r.city))) {
+    if (city === '糸島市') continue;
+    const rendered = renderToStaticMarkup(await listing.default({ searchParams: Promise.resolve({ city }) }));
+    const buttons = areaNames(rendered);
+    assert.deepEqual(buttons.slice(1).map(b => b.area), [...new Set(real.filter(r => r.city === city && r.isPublished).map(r => r.area).filter(Boolean))]);
+    assert.ok(buttons.every(b => !b.body.includes('<span')));
+  }
+  const tied = { '同音乙': 'おなじ', '同音甲': 'おなじ' };
+  assert.equal(JSON.stringify(areaHelpers.sortAreasByReading(Object.keys(tied), tied)), JSON.stringify(areaHelpers.sortAreasByReading(Object.keys(tied).reverse(), tied)));
+  assert.equal(JSON.stringify(areaHelpers.sortAreasByReading(['未登録B', '未登録A'], {})), '["未登録B","未登録A"]');
+  console.log('PASS: 40 official readings, exact kana order, All first, deterministic ties, all other municipalities unchanged');
+}
 const query = { type: '訪問リハビリテーション', city: '朝倉市' };
 const html = renderToStaticMarkup(await listing.default({ searchParams: Promise.resolve(query) }));
 assert.ok(html.includes('訪問サービス') && html.includes('朝倉市') && html.includes('facility-2639'));

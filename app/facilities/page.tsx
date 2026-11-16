@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getFacilities } from "@/lib/facilities";
+import { getAreaReadings, sortAreasByReading } from "@/lib/area-readings";
 import {
   serviceCategoryMapping,
   serviceCategories,
@@ -198,6 +199,9 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
         .filter(Boolean),
     ),
   ) as string[];
+
+  const areaReadings = getAreaReadings(selectedCity);
+  const sortedAreas = sortAreasByReading(areas, areaReadings);
 
   const rawFilteredFacilities = publishedFacilities.filter((facility) => {
     let matchType = false;
@@ -616,7 +620,7 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                   すべて
                 </Link>
 
-                {areas.map((area) => (
+                {sortedAreas.map((area) => (
                   <Link
                     key={area}
                     href={createFacilitiesHref(
@@ -631,11 +635,20 @@ export default async function FacilitiesPage({ searchParams }: PageProps) {
                         : "border-gray-300 bg-white text-gray-700 hover:border-emerald-400 hover:text-emerald-700"
                     }`}
                   >
-                    {displayArea(
+                    {areaReadings[area] ? (
+                      <span className="flex max-w-full flex-col items-center gap-0.5 text-center">
+                        <span className="leading-5">{displayArea(area, selectedCity)}</span>
+                        <span className="text-xs font-normal leading-4 opacity-80">
+                          {areaReadings[area]}
+                        </span>
+                      </span>
+                    ) : (
+                    displayArea(
                       area,
                       publishedFacilities.find(
                         (facility) => facility.area === area,
                       )?.city,
+                    )
                     )}
                   </Link>
                 ))}
