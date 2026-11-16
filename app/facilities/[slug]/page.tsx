@@ -1,6 +1,7 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getFacilities } from "@/lib/facilities";
+import { getFacilities, type Facility } from "@/lib/facilities";
 import { getServiceTypeStyle } from "@/lib/service-types";
 
 type PageProps = {
@@ -25,10 +26,28 @@ function createGoogleMapUrl(address: string | undefined, name: string) {
   )}`;
 }
 
+// CSV updates are deployed together with a rebuild; ungenerated slugs stay 404.
+export const dynamicParams = false;
+
+function requirePublishedFacility(facilities: Facility[], slug: string) {
+  const facility = facilities.find((item) => item.slug === slug);
+  if (!facility || facility.isPublished !== true) {
+    notFound();
+  }
+  return facility;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  requirePublishedFacility(await getFacilities(), slug);
+  // Preserve the existing site metadata inherited from the layout.
+  return {};
+}
+
 export async function generateStaticParams() {
   const facilities = await getFacilities();
 
-  return facilities.map((facility) => ({
+  return facilities.filter((facility) => facility.isPublished === true).map((facility) => ({
     slug: facility.slug,
   }));
 }
@@ -37,11 +56,8 @@ export default async function FacilityDetailPage({ params }: PageProps) {
   const { slug } = await params;
   const facilities = await getFacilities();
 
-  const facility = facilities.find((item) => item.slug === slug);
-
-  if (!facility) {
-    notFound();
-  }
+  const facility = requirePublishedFacility(facilities, slug);
+  const serviceArea = facility.serviceArea?.trim();
 
   const styles = getServiceTypeStyle(facility.type);
   const tags = normalizeTags(facility.tags);
@@ -231,14 +247,16 @@ export default async function FacilityDetailPage({ params }: PageProps) {
                   </p>
                 </div>
 
+                {serviceArea && (
                 <div className="grid gap-1 py-4 md:grid-cols-[160px_1fr]">
                   <p className="text-sm font-semibold text-gray-500">
                     対応エリア
                   </p>
                   <p className="text-gray-900 font-medium">
-                    {facility.serviceArea || facility.area || "未掲載"}
+                    {facility.serviceArea}
                   </p>
                 </div>
+                )}
 
                 {facility.updatedAt && (
                   <div className="grid gap-1 py-4 md:grid-cols-[160px_1fr]">

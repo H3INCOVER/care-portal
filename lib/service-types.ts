@@ -33,6 +33,11 @@ export const typeStyles: Record<string, ServiceTypeStyle> = {
     badge: "bg-sky-50 text-sky-700",
     symbol: "🩺",
   },
+  訪問リハビリテーション: {
+    icon: "bg-sky-100 text-sky-700",
+    badge: "bg-sky-50 text-sky-700",
+    symbol: "🚶",
+  },
   福祉用具貸与: {
     icon: "bg-violet-100 text-violet-700",
     badge: "bg-violet-50 text-violet-700",
@@ -98,6 +103,11 @@ export const typeStyles: Record<string, ServiceTypeStyle> = {
     badge: "bg-rose-50 text-rose-700",
     symbol: "🏨",
   },
+  "特定施設入居者生活介護（有料老人ホーム）": {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+    symbol: "🏨",
+  },
   "特定施設入居者生活介護（介護付有料老人ホーム）": {
     icon: "bg-rose-100 text-rose-700",
     badge: "bg-rose-50 text-rose-700",
@@ -154,6 +164,11 @@ export const typeStyles: Record<string, ServiceTypeStyle> = {
     symbol: "🛌",
   },
   短期入所療養介護: {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+    symbol: "🛌",
+  },
+  "短期入所療養介護（介護老人保健施設）": {
     icon: "bg-rose-100 text-rose-700",
     badge: "bg-rose-50 text-rose-700",
     symbol: "🛌",
@@ -280,7 +295,7 @@ export const serviceCategoryMapping: Record<string, ServiceTypeGroup[]> = {
     { label: "地域密着型特別養護老人ホーム", types: ["地域密着型特別養護老人ホーム", "地域密着型介護老人福祉施設", "地域密着型介護老人福祉施設入所者生活介護"] },
     { label: "介護老人保健施設（老健）", types: ["介護老人保健施設", "介護老人保健施設（老健）", "介護老人保健施設 (老健)"] },
     { label: "認知症対応型共同生活介護（グループホーム）", types: ["認知症対応型共同生活介護", "認知症対応型共同生活介護（グループホーム）", "認知症対応型共同生活介護 (グループホーム)"] },
-    { label: "特定施設入居者生活介護（介護付有料老人ホーム）", types: ["特定施設入居者生活介護", "特定施設入居者生活介護（介護付有料老人ホーム）", "特定施設入居者生活介護 (介護付有料老人ホーム)", "特定施設入居者生活介護（ユニット型）"] },
+    { label: "特定施設入居者生活介護（介護付有料老人ホーム）", types: ["特定施設入居者生活介護", "特定施設入居者生活介護（介護付有料老人ホーム）", "特定施設入居者生活介護 (介護付有料老人ホーム)", "特定施設入居者生活介護（ユニット型）", "特定施設入居者生活介護（有料老人ホーム）"] },
     { label: "住宅型有料老人ホーム", types: ["住宅型有料老人ホーム"] },
     { label: "サービス付き高齢者向け住宅", types: ["サービス付き高齢者向け住宅"] },
     { label: "軽費老人ホーム（ケアハウス）", types: ["軽費老人ホーム", "ケアハウス"] },
@@ -288,7 +303,7 @@ export const serviceCategoryMapping: Record<string, ServiceTypeGroup[]> = {
   ],
   短期入所: [
     { label: "短期入所生活介護（ショートステイ）", types: ["短期入所生活介護", "短期入所生活介護・療養介護（ショートステイ）", "短期入所生活介護・療養介護（ショートステイ）（ユニット型）", "短期入所生活介護（ユニット型）"] },
-    { label: "短期入所療養介護", types: ["短期入所療養介護"] },
+    { label: "短期入所療養介護", types: ["短期入所療養介護", "短期入所療養介護（介護老人保健施設）"] },
   ],
   福祉用具: [
     { label: "福祉用具貸与", types: ["福祉用具貸与"] },
