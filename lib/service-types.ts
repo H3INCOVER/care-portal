@@ -253,6 +253,11 @@ export const typeStyles: Record<string, ServiceTypeStyle> = {
     badge: "bg-orange-50 text-orange-700",
     symbol: "🏠",
   },
+  "看護小規模多機能型居宅介護（複合型サービス）": {
+    icon: "bg-orange-100 text-orange-700",
+    badge: "bg-orange-50 text-orange-700",
+    symbol: "🏠",
+  },
   特定福祉用具販売: {
     icon: "bg-violet-100 text-violet-700",
     badge: "bg-violet-50 text-violet-700",
@@ -288,7 +293,7 @@ export const serviceCategoryMapping: Record<string, ServiceTypeGroup[]> = {
   居宅: [
     { label: "居宅介護支援", types: ["居宅介護支援", "居宅介護支援事業所"] },
     { label: "小規模多機能型居宅介護", types: ["小規模多機能型居宅介護"] },
-    { label: "看護小規模多機能型居宅介護", types: ["看護小規模多機能型居宅介護"] },
+    { label: "看護小規模多機能型居宅介護", types: ["看護小規模多機能型居宅介護", "看護小規模多機能型居宅介護（複合型サービス）"] },
   ],
   "入居・施設": [
     { label: "介護老人福祉施設（特別養護老人ホーム）", types: ["介護老人福祉施設", "介護老人福祉施設（特別養護老人ホーム）", "介護老人福祉施設 (特別養護老人ホーム)", "介護老人福祉施設（ユニット型）"] },
