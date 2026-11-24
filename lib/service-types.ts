@@ -218,6 +218,11 @@ export const typeStyles: Record<string, ServiceTypeStyle> = {
     badge: "bg-rose-50 text-rose-700",
     symbol: "🏠",
   },
+  "特定施設入居者生活介護（軽費老人ホーム）": {
+    icon: "bg-rose-100 text-rose-700",
+    badge: "bg-rose-50 text-rose-700",
+    symbol: "🏠",
+  },
   ケアハウス: {
     icon: "bg-rose-100 text-rose-700",
     badge: "bg-rose-50 text-rose-700",
@@ -303,7 +308,7 @@ export const serviceCategoryMapping: Record<string, ServiceTypeGroup[]> = {
     { label: "特定施設入居者生活介護（介護付有料老人ホーム）", types: ["特定施設入居者生活介護", "特定施設入居者生活介護（介護付有料老人ホーム）", "特定施設入居者生活介護 (介護付有料老人ホーム)", "特定施設入居者生活介護（ユニット型）", "特定施設入居者生活介護（有料老人ホーム）"] },
     { label: "住宅型有料老人ホーム", types: ["住宅型有料老人ホーム"] },
     { label: "サービス付き高齢者向け住宅", types: ["サービス付き高齢者向け住宅"] },
-    { label: "軽費老人ホーム（ケアハウス）", types: ["軽費老人ホーム", "ケアハウス"] },
+    { label: "軽費老人ホーム（ケアハウス）", types: ["軽費老人ホーム", "ケアハウス", "特定施設入居者生活介護（軽費老人ホーム）"] },
     { label: "介護医療院", types: ["介護医療院"] },
   ],
   短期入所: [

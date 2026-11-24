@@ -1,10 +1,12 @@
 import itoshima from "@/data/area-readings/itoshima.json";
 import ogori from "@/data/area-readings/ogori.json";
+import koga from "@/data/area-readings/koga.json";
 
 // Add verified municipality datasets here; facility CSV values remain unchanged.
 const municipalityReadings: Record<string, Readonly<Record<string, string>>> = {
   [itoshima.city]: itoshima.readings,
   [ogori.city]: ogori.readings,
+  [koga.city]: koga.readings,
 };
 const kanaOrder = new Intl.Collator("ja", { usage: "sort", sensitivity: "variant" });
 
